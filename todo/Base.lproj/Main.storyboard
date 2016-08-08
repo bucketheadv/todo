@@ -118,6 +118,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="添加" id="BhD-0P-BLb">
+                        <barButtonItem key="leftBarButtonItem" title="取消" id="Z0b-LC-V7j">
+                            <connections>
+                                <action selector="cancel:" destination="qpD-br-Mxt" id="1gv-20-9YX"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="确定" id="WhL-hp-VYo">
                             <connections>
                                 <action selector="done:" destination="qpD-br-Mxt" id="1yQ-KN-YV5"/>
@@ -127,6 +132,7 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="doneButton" destination="WhL-hp-VYo" id="Ati-jc-o3e"/>
                         <outlet property="iconImageView" destination="FqD-sf-fnH" id="boA-Ab-Ia7"/>
                         <outlet property="textField" destination="yXT-h1-OUm" id="2Ea-vP-3FX"/>
                     </connections>

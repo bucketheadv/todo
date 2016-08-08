@@ -8,11 +8,23 @@
 
 import UIKit
 
-class TypeDetailViewController: UITableViewController, ProtocolIconView {
+extension NSRange {
+    func toRange(string: String) -> Range<String.Index> {
+        let startIndex = string.startIndex.advancedBy(self.location)
+        let endIndex   = startIndex.advancedBy(self.length)
+        return startIndex..<endIndex
+    }
+}
+
+class TypeDetailViewController: UITableViewController, ProtocolIconView, UITextFieldDelegate {
     var typeItem:TypeItem = TypeItem(name: "")
     var isAdd:Bool = true
-    var isLoad:Bool = false
 
+    @IBOutlet weak var doneButton: UIBarButtonItem!
+    @IBAction func cancel(sender: AnyObject) {
+        self.tabBarController?.selectedIndex = 0
+        onAddType()
+    }
     @IBAction func done(sender: AnyObject) {
         typeItem.name = textField.text!
         if isAdd {
@@ -39,9 +51,6 @@ class TypeDetailViewController: UITableViewController, ProtocolIconView {
         
         self.title = "编辑分类"
         self.typeItem = item
-        if isLoad {
-            onUpdate()
-        }
     }
     
     func onUpdate() {
@@ -50,7 +59,7 @@ class TypeDetailViewController: UITableViewController, ProtocolIconView {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        isLoad = true
+        textField.delegate = self
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -62,6 +71,16 @@ class TypeDetailViewController: UITableViewController, ProtocolIconView {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        onUpdate()
+        textField.becomeFirstResponder()
+        if isAdd {
+            doneButton.enabled = false
+        } else {
+            doneButton.enabled = true
+        }
     }
 
     // MARK: - Table view data source
@@ -85,6 +104,12 @@ class TypeDetailViewController: UITableViewController, ProtocolIconView {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let controller = segue.destinationViewController as! IconViewController
         controller.delegate = self
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let newText = textField.text!.stringByReplacingCharactersInRange(range.toRange(textField.text!), withString: string)
+        doneButton.enabled = newText.characters.count > 0
+        return true
     }
     
     /*

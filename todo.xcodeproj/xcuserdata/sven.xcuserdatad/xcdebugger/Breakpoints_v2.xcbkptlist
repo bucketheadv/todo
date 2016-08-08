@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "todo/TypeDetailViewController.swift"
-            timestampString = "492270137.549442"
+            timestampString = "492323307.832973"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "11"
-            endingLineNumber = "11"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
             landmarkName = "TypeDetailViewController"
             landmarkType = "3">
          </BreakpointContent>
