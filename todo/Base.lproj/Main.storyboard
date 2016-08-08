@@ -31,6 +31,9 @@
                     <navigationItem key="navigationItem" title="任务分类" id="Vth-5I-auw"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <segue destination="orb-EE-kYc" kind="show" identifier="showTodoList" id="Lfa-xf-BGG"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QVM-8s-ANr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -118,11 +121,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="添加" id="BhD-0P-BLb">
-                        <barButtonItem key="leftBarButtonItem" title="取消" id="Z0b-LC-V7j">
-                            <connections>
-                                <action selector="cancel:" destination="qpD-br-Mxt" id="1gv-20-9YX"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="确定" id="WhL-hp-VYo">
                             <connections>
                                 <action selector="done:" destination="qpD-br-Mxt" id="1yQ-KN-YV5"/>
@@ -140,6 +138,48 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7wg-Hl-ObZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1858.5" y="1142.5"/>
+        </scene>
+        <!--任务清单-->
+        <scene sceneID="TXT-1s-KTf">
+            <objects>
+                <tableViewController title="任务清单" id="orb-EE-kYc" customClass="TodoListController" customModule="todo" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="sDu-7B-jgP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="todoCell" id="1Xo-mX-6gU">
+                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Xo-mX-6gU" id="1x8-cD-jFr">
+                                    <rect key="frame" x="0.0" y="0.0" width="308" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" tag="1002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkbox-normal" translatesAutoresizingMaskIntoConstraints="NO" id="OgA-YG-65Z">
+                                            <rect key="frame" x="8" y="10" width="23" height="23"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="1000" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rwg-kG-85m">
+                                            <rect key="frame" x="40" y="4" width="260" height="36"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="orb-EE-kYc" id="KQ0-W2-0R2"/>
+                            <outlet property="delegate" destination="orb-EE-kYc" id="FJ1-vI-FCv"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="任务清单" id="nSn-aA-kVO"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KJs-9q-jRg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2421.5" y="297.5"/>
         </scene>
         <!--Icon View Controller-->
         <scene sceneID="nP8-xh-ART">
@@ -214,6 +254,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="checkbox-normal" width="23" height="23"/>
         <image name="plus" width="40" height="40"/>
         <image name="todo" width="40" height="40"/>
         <image name="提醒" width="36" height="36"/>

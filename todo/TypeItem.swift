@@ -9,6 +9,7 @@
 import UIKit
 
 class TypeItem: NSObject {
+    var items = [TodoItem]()
     //分类名
     var name:String = ""
     //分类图标
@@ -19,4 +20,13 @@ class TypeItem: NSObject {
         self.name = name
     }
     
+    func countUncheckedItems() -> Int {
+        var count = 0
+        for item in items {
+            if item.checked != true {
+                count += 1
+            }
+        }
+        return count
+    }
 }

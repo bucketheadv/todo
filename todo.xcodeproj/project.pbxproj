@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		262DA6491D5883CD00BC9E5E /* TodoListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262DA6481D5883CD00BC9E5E /* TodoListController.swift */; };
+		262DA64B1D58841100BC9E5E /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262DA64A1D58841100BC9E5E /* TodoItem.swift */; };
 		26325AD61D575FC300E25517 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26325AD51D575FC300E25517 /* AppDelegate.swift */; };
 		26325AD81D575FC300E25517 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26325AD71D575FC300E25517 /* ViewController.swift */; };
 		26325ADB1D575FC300E25517 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26325AD91D575FC300E25517 /* Main.storyboard */; };
@@ -39,6 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		262DA6481D5883CD00BC9E5E /* TodoListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoListController.swift; sourceTree = "<group>"; };
+		262DA64A1D58841100BC9E5E /* TodoItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
 		26325AD21D575FC300E25517 /* todo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = todo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26325AD51D575FC300E25517 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		26325AD71D575FC300E25517 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -151,6 +155,7 @@
 		26325B041D5760BA00E25517 /* todo */ = {
 			isa = PBXGroup;
 			children = (
+				262DA6481D5883CD00BC9E5E /* TodoListController.swift */,
 			);
 			name = todo;
 			sourceTree = "<group>";
@@ -160,6 +165,7 @@
 			children = (
 				26325B131D576A0800E25517 /* TypeItem.swift */,
 				26325B151D576C0500E25517 /* TodoModel.swift */,
+				262DA64A1D58841100BC9E5E /* TodoItem.swift */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -296,6 +302,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				26325B0B1D5764D400E25517 /* TypeViewController.swift in Sources */,
+				262DA64B1D58841100BC9E5E /* TodoItem.swift in Sources */,
+				262DA6491D5883CD00BC9E5E /* TodoListController.swift in Sources */,
 				26325B0D1D57658C00E25517 /* TypeDetailViewController.swift in Sources */,
 				26325AD81D575FC300E25517 /* ViewController.swift in Sources */,
 				26325B161D576C0500E25517 /* TodoModel.swift in Sources */,

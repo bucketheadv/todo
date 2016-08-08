@@ -1,18 +1,19 @@
 //
-//  TypeViewController.swift
+//  TodoListController.swift
 //  todo
 //
-//  Created by sven liu on 16/8/7.
+//  Created by sven liu on 16/8/8.
 //  Copyright © 2016年 sven liu. All rights reserved.
 //
 
 import UIKit
 
-class TypeViewController: UITableViewController {
-    var typeList = [TypeItem]()
+class TodoListController: UITableViewController {
+    var todoList:TypeItem?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = self.todoList?.name
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -25,10 +26,6 @@ class TypeViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    override func viewWillAppear(animated: Bool) {
-        self.tableView.reloadData()
-    }
 
     // MARK: - Table view data source
 
@@ -39,64 +36,46 @@ class TypeViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return todoModel.typeList.count
+        return todoList!.items.count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        //let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-        let typeItem = todoModel.typeList[indexPath.row]
-        let cellIdentifier = "typeCell"
-        let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: cellIdentifier)
-        cell.textLabel!.text = typeItem.name
-        cell.imageView!.image = UIImage(named: typeItem.icon)
+        let item = todoList!.items[indexPath.row]
+        let cell = tableView.dequeueReusableCellWithIdentifier("todoCell", forIndexPath: indexPath) as UITableViewCell
+        let label = cell.viewWithTag(1000) as! UILabel
+        label.text = item.text
+        onCheckmark(cell, item: item)
 
-        if typeItem.items.count == 0 {
-            cell.detailTextLabel?.text = "还没有添加任务"
-        } else {
-            let count = typeItem.countUncheckedItems()
-            if count == 0 {
-                cell.detailTextLabel?.text = "全部搞定"
-            } else {
-                cell.detailTextLabel?.text = "还有\(count)个任务要完成"
-            }
-        }
         // Configure the cell...
 
         return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let type = todoModel.typeList[indexPath.row]
-        self.performSegueWithIdentifier("showTodoList", sender: type)
+        let item = todoList!.items[indexPath.row]
+        item.onChangeChecked()
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        onCheckmark(cell!, item: item)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    func onCheckmark(cell:UITableViewCell, item:TodoItem) {
+        let check = cell.viewWithTag(1002) as! UIImageView
+        if item.checked! {
+            check.image = UIImage(named: "checkbox-checked")
+        } else {
+            check.image = UIImage(named: "checkbox-normal")
+        }
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        todoModel.typeList.removeAtIndex(indexPath.row)
+        todoList!.items.removeAtIndex(indexPath.row)
         let indexPaths = [indexPath]
         tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Automatic)
     }
     
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let editAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "编辑", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) -> Void in
-            let typeItem = todoModel.typeList[indexPath.row]
-            let navigation = self.tabBarController?.viewControllers?[1] as! UINavigationController
-            let typeDetail = navigation.viewControllers.first as? TypeDetailViewController
-            typeDetail?.onEditType(typeItem)
-            self.tabBarController?.selectedIndex = 1
-        })
-        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "删除", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) -> Void in
-            todoModel.typeList.removeAtIndex(indexPath.row)
-            let indexPaths = [indexPath]
-            tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Automatic)
-        })
-        editAction.backgroundColor = UIColor.lightGrayColor()
-        deleteAction.backgroundColor = UIColor.redColor()
-        return [deleteAction, editAction]
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let controller = segue.destinationViewController as! TodoListController
-        controller.todoList = sender as? TypeItem
+    override func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
+        return "删除"
     }
 
     /*
