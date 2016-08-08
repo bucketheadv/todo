@@ -66,6 +66,24 @@ class TypeViewController: UITableViewController {
         let indexPaths = [indexPath]
         tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Automatic)
     }
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let editAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "编辑", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) -> Void in
+            let typeItem = todoModel.typeList[indexPath.row]
+            let navigation = self.tabBarController?.viewControllers?[1] as! UINavigationController
+            let typeDetail = navigation.viewControllers.first as? TypeDetailViewController
+            typeDetail?.onEditType(typeItem)
+            self.tabBarController?.selectedIndex = 1
+        })
+        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "删除", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) -> Void in
+            todoModel.typeList.removeAtIndex(indexPath.row)
+            let indexPaths = [indexPath]
+            tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Automatic)
+        })
+        editAction.backgroundColor = UIColor.lightGrayColor()
+        deleteAction.backgroundColor = UIColor.redColor()
+        return [deleteAction, editAction]
+    }
 
     /*
     // Override to support conditional editing of the table view.
