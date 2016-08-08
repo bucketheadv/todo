@@ -13,7 +13,6 @@ class TypeViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("来自星星的我!")
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
