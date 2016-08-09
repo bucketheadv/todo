@@ -13,11 +13,11 @@ protocol ProtocolTodoDetail {
     func editItem()
 }
 
-class TodoDetailController: UITableViewController {
+class TodoDetailController: UITableViewController, ProtocolLevel {
     
     var isAdd:Bool = true
-    var todoItem   = TodoItem()
-    var delegate : ProtocolTodoDetail?
+    var todoItem:TodoItem = TodoItem()
+    var delegate:ProtocolTodoDetail?
     var datePickerVisible:Bool = false
 
     @IBOutlet weak var labLevel: UILabel!
@@ -38,8 +38,19 @@ class TodoDetailController: UITableViewController {
     @IBAction func cancel(sender: AnyObject) {
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        labLevel.text = LevelItem.onGetTitle(self.todoItem.level)
+        if isAdd {
+            todoItem = TodoItem()
+        } else {
+            self.title = "编辑任务"
+            textField.text = todoItem.text
+            labLevel.text = LevelItem.onGetTitle(todoItem.level)
+            switchControl.on = todoItem.shouldRemind!
+        }
+        upDateDueDateLabel()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -62,15 +73,10 @@ class TodoDetailController: UITableViewController {
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
-        if isAdd {
-            todoItem = TodoItem()
-        } else {
-            self.title = "编辑任务"
-            textField.text = todoItem.text
-            switchControl.on = todoItem.shouldRemind!
-        }
-        upDateDueDateLabel()
+    func onGetLevel(levelItem: LevelItem) {
+        labLevel.text = levelItem.title
+        todoItem.level = levelItem.level!
+        self.navigationController?.popViewControllerAnimated(true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -195,14 +201,15 @@ class TodoDetailController: UITableViewController {
     }
     */
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        let controller = segue.destinationViewController as! TodoLevelController
+        controller.delegate = self
+        controller.onSetCheckMark(todoItem.level)
     }
-    */
 
 }

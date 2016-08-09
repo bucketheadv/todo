@@ -1,19 +1,23 @@
 //
-//  TodoListController.swift
+//  TodoLevelController.swift
 //  todo
 //
-//  Created by sven liu on 16/8/8.
+//  Created by sven liu on 16/8/9.
 //  Copyright © 2016年 sven liu. All rights reserved.
 //
 
 import UIKit
 
-class TodoListController: UITableViewController, ProtocolTodoDetail {
-    var todoList:TypeItem?
+protocol ProtocolLevel {
+    func onGetLevel(levelItem:LevelItem)
+}
+
+class TodoLevelController: UITableViewController {
+    var arrLevel:[LevelItem] = [LevelItem]()
+    var delegate:ProtocolLevel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = self.todoList?.name
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -21,19 +25,21 @@ class TodoListController: UITableViewController, ProtocolTodoDetail {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
-    
-    func addItem(item: TodoItem) {
-        todoList?.items.append(item)
-        self.tableView.reloadData()
-    }
-    
-    func editItem() {
-        self.tableView.reloadData()
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        self.title = "请选择任务的重要级别"
         // Dispose of any resources that can be recreated.
+    }
+    
+    func onSetCheckMark(level:Int) {
+        for i in 0...4 {
+            let item = LevelItem(level: i)
+            if i == level {
+                item.checkMark = true
+            }
+            arrLevel.append(item)
+        }
     }
 
     // MARK: - Table view data source
@@ -45,15 +51,18 @@ class TodoListController: UITableViewController, ProtocolTodoDetail {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return todoList!.items.count
+        return arrLevel.count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let item = todoList!.items[indexPath.row]
-        let cell = tableView.dequeueReusableCellWithIdentifier("todoCell", forIndexPath: indexPath) as UITableViewCell
-        let label = cell.viewWithTag(1000) as! UILabel
-        label.text = item.text! + " \(LevelItem.onGetTitle(item.level))"
-        onCheckmark(cell, item: item)
+        let item = arrLevel[indexPath.row]
+        let cell = tableView.dequeueReusableCellWithIdentifier("levelCell", forIndexPath: indexPath) as UITableViewCell
+        cell.textLabel!.text = item.title
+        if item.checkMark {
+            cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryType.None
+        }
 
         // Configure the cell...
 
@@ -61,44 +70,8 @@ class TodoListController: UITableViewController, ProtocolTodoDetail {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let item = todoList!.items[indexPath.row]
-        item.onChangeChecked()
-        let cell = tableView.cellForRowAtIndexPath(indexPath)
-        onCheckmark(cell!, item: item)
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    }
-    
-    func onCheckmark(cell:UITableViewCell, item:TodoItem) {
-        let check = cell.viewWithTag(1002) as! UIImageView
-        if item.checked! {
-            check.image = UIImage(named: "checkbox-checked")
-        } else {
-            check.image = UIImage(named: "checkbox-normal")
-        }
-    }
-    
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        todoList!.items.removeAtIndex(indexPath.row)
-        let indexPaths = [indexPath]
-        tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Automatic)
-    }
-    
-    override func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
-        return "删除"
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let navigationController = segue.destinationViewController as! UINavigationController
-        let controller = navigationController.topViewController as! TodoDetailController
-        controller.delegate = self
-        let segueStr = segue.identifier
-        if segueStr == "AddItem" {
-            controller.isAdd = true
-        } else if segueStr == "EditItem" {
-            let indexPath = self.tableView.indexPathForCell(sender! as! UITableViewCell)
-            controller.todoItem = todoList!.items[indexPath!.row]
-            controller.isAdd = false
-        }
+        let item = arrLevel[indexPath.row]
+        delegate?.onGetLevel(item)
     }
 
     /*
