@@ -13,7 +13,7 @@ protocol ProtocolTodoDetail {
     func editItem()
 }
 
-class TodoDetailController: UITableViewController, ProtocolLevel {
+class TodoDetailController: UITableViewController, ProtocolLevel, UITextFieldDelegate {
     
     var isAdd:Bool = true
     var todoItem:TodoItem = TodoItem()
@@ -24,7 +24,7 @@ class TodoDetailController: UITableViewController, ProtocolLevel {
     @IBOutlet weak var dueDateLabel: UILabel!
     @IBOutlet weak var switchControl: UISwitch!
     @IBOutlet weak var textField: UITextField!
-    @IBOutlet weak var doneButton: UINavigationItem!
+    @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBAction func done(sender: AnyObject) {
         todoItem.text = self.textField.text
         todoItem.shouldRemind = self.switchControl.on
@@ -42,6 +42,7 @@ class TodoDetailController: UITableViewController, ProtocolLevel {
     override func viewDidLoad() {
         super.viewDidLoad()
         labLevel.text = LevelItem.onGetTitle(self.todoItem.level)
+        textField.delegate = self
         if isAdd {
             todoItem = TodoItem()
         } else {
@@ -57,6 +58,15 @@ class TodoDetailController: UITableViewController, ProtocolLevel {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        textField.becomeFirstResponder()
+        if isAdd {
+            doneButton.enabled = false
+        } else {
+            doneButton.enabled = true
+        }
     }
     
     func showDatePicker() {
@@ -210,6 +220,12 @@ class TodoDetailController: UITableViewController, ProtocolLevel {
         let controller = segue.destinationViewController as! TodoLevelController
         controller.delegate = self
         controller.onSetCheckMark(todoItem.level)
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let newText = textField.text!.stringByReplacingCharactersInRange(range.toRange(textField.text!), withString: string)
+        doneButton.enabled = newText.characters.count > 0
+        return true
     }
 
 }
