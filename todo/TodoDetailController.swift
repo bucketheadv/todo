@@ -34,6 +34,7 @@ class TodoDetailController: UITableViewController, ProtocolLevel, UITextFieldDel
             delegate?.editItem()
         }
         todoModel.saveData()
+        todoItem.scheduleNotification()
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func cancel(sender: AnyObject) {

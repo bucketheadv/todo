@@ -46,4 +46,39 @@ class TodoItem: NSObject {
     func onChangeChecked() {
         self.checked = !self.checked
     }
+    
+    func scheduleNotification() {
+        let existingNotification = self.notificationForThisItem()  as UILocalNotification?
+        if existingNotification != nil {
+            UIApplication.sharedApplication().cancelLocalNotification(existingNotification!)
+        }
+        if self.shouldRemind && (self.dueDate.compare(NSDate()) != NSComparisonResult.OrderedAscending) {
+            let localNotification = UILocalNotification()
+            localNotification.fireDate = self.dueDate
+            localNotification.timeZone = NSTimeZone.defaultTimeZone()
+            localNotification.alertBody = self.text
+            localNotification.soundName = UILocalNotificationDefaultSoundName
+            localNotification.userInfo = ["ItemID": self.itemId]
+            UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
+        }
+    }
+    
+    func notificationForThisItem() -> UILocalNotification? {
+        let allNotifications = UIApplication.sharedApplication().scheduledLocalNotifications
+        for notification in allNotifications! {
+            var info = notification.userInfo as! Dictionary<String, Int>
+            let number = info["itemID"]
+            if number != nil && number == self.itemId {
+                return notification
+            }
+        }
+        return nil
+    }
+    
+    deinit {
+        let existingNotification = self.notificationForThisItem() as UILocalNotification?
+        if existingNotification != nil {
+            UIApplication.sharedApplication().cancelLocalNotification(existingNotification!)
+        }
+    }
 }
