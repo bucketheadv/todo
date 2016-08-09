@@ -91,6 +91,7 @@ class TypeViewController: UITableViewController {
         })
         editAction.backgroundColor = UIColor.lightGrayColor()
         deleteAction.backgroundColor = UIColor.redColor()
+        todoModel.saveData()
         return [deleteAction, editAction]
     }
     

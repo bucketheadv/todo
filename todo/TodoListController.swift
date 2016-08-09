@@ -52,7 +52,7 @@ class TodoListController: UITableViewController, ProtocolTodoDetail {
         let item = todoList!.items[indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier("todoCell", forIndexPath: indexPath) as UITableViewCell
         let label = cell.viewWithTag(1000) as! UILabel
-        label.text = item.text! + " \(LevelItem.onGetTitle(item.level))"
+        label.text = item.text + " \(LevelItem.onGetTitle(item.level))"
         onCheckmark(cell, item: item)
 
         // Configure the cell...
@@ -70,7 +70,7 @@ class TodoListController: UITableViewController, ProtocolTodoDetail {
     
     func onCheckmark(cell:UITableViewCell, item:TodoItem) {
         let check = cell.viewWithTag(1002) as! UIImageView
-        if item.checked! {
+        if item.checked {
             check.image = UIImage(named: "checkbox-checked")
         } else {
             check.image = UIImage(named: "checkbox-normal")
@@ -80,6 +80,7 @@ class TodoListController: UITableViewController, ProtocolTodoDetail {
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         todoList!.items.removeAtIndex(indexPath.row)
         let indexPaths = [indexPath]
+        todoModel.saveData()
         tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Automatic)
     }
     

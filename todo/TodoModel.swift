@@ -13,7 +13,10 @@ class TodoModel: NSObject {
     
     override init() {
         super.init()
-        onCreateData()
+        //onCreateData()
+        loadData()
+        print("沙盒文件夹路径: \(documentsDirectory())")
+        print("数据文件路径: \(dataFilePath())")
     }
     
     func onCreateData() {
@@ -34,6 +37,41 @@ class TodoModel: NSObject {
     
     class func nextTodoItemId() -> Int {
         return 0
+    }
+    
+    func documentsDirectory() -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentationDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+        let documentsDirectory:String = paths.first! as String
+        return documentsDirectory
+    }
+    
+    func dataFilePath() -> String {
+        return self.documentsDirectory().stringByAppendingString("/todo.plist")
+    }
+    
+    func saveData() {
+        let data = NSMutableData()
+        
+        let archiver = NSKeyedArchiver(forWritingWithMutableData: data)
+        archiver.encodeObject(typeList, forKey: "todolist")
+        archiver.finishEncoding()
+        data.writeToFile(dataFilePath(), atomically: true)
+    }
+    
+    func loadData() {
+        let path = self.dataFilePath()
+        let defaultManager = NSFileManager()
+        if defaultManager.fileExistsAtPath(path) {
+            print("存在了")
+            let data = NSData(contentsOfFile: path)
+            let unarchiver = NSKeyedUnarchiver(forReadingWithData: data!)
+            typeList = unarchiver.decodeObjectForKey("todolist") as! Array
+            unarchiver.finishDecoding()
+        } else {
+            let type = TypeItem(name: "女神有关")
+            typeList.append(type)
+            saveData()
+        }
     }
 }
 

@@ -35,6 +35,7 @@ class TypeDetailViewController: UITableViewController, ProtocolIconView, UITextF
         typeView?.tableView.reloadData()
         self.tabBarController?.selectedIndex = 0
         onAddType()
+        todoModel.saveData()
     }
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var iconImageView: UIImageView!

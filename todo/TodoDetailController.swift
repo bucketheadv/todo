@@ -26,13 +26,14 @@ class TodoDetailController: UITableViewController, ProtocolLevel, UITextFieldDel
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBAction func done(sender: AnyObject) {
-        todoItem.text = self.textField.text
+        todoItem.text = self.textField.text!
         todoItem.shouldRemind = self.switchControl.on
         if isAdd {
             delegate?.addItem(todoItem)
         } else {
             delegate?.editItem()
         }
+        todoModel.saveData()
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func cancel(sender: AnyObject) {
@@ -49,7 +50,7 @@ class TodoDetailController: UITableViewController, ProtocolLevel, UITextFieldDel
             self.title = "编辑任务"
             textField.text = todoItem.text
             labLevel.text = LevelItem.onGetTitle(todoItem.level)
-            switchControl.on = todoItem.shouldRemind!
+            switchControl.on = todoItem.shouldRemind
         }
         upDateDueDateLabel()
 
@@ -112,7 +113,7 @@ class TodoDetailController: UITableViewController, ProtocolLevel, UITextFieldDel
     func upDateDueDateLabel() {
         let formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy年MM月dd日 HH:mm:ss"
-        self.dueDateLabel.text = formatter.stringFromDate(todoItem.dueDate!)
+        self.dueDateLabel.text = formatter.stringFromDate(todoItem.dueDate)
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

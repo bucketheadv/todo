@@ -20,6 +20,18 @@ class TypeItem: NSObject {
         self.name = name
     }
     
+    init(coder aDecoder:NSCoder!) {
+        self.name = aDecoder.decodeObjectForKey("Name") as! String
+        self.items = aDecoder.decodeObjectForKey("Items") as! [TodoItem]
+        self.icon = aDecoder.decodeObjectForKey("icon") as! String
+    }
+    
+    func encodeWithCoder(aCoder:NSCoder!) {
+        aCoder.encodeObject(name, forKey: "Name")
+        aCoder.encodeObject(items, forKey: "Items")
+        aCoder.encodeObject(icon, forKey: "Icon")
+    }
+    
     func countUncheckedItems() -> Int {
         var count = 0
         for item in items {
