@@ -27,6 +27,7 @@ class TypeViewController: UITableViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        todoModel.sortLists()
         self.tableView.reloadData()
     }
 

@@ -73,6 +73,14 @@ class TodoModel: NSObject {
             saveData()
         }
     }
+    
+    func sortLists() {
+        typeList.sortInPlace(onSort)
+    }
+    
+    func onSort(s1:TypeItem, s2:TypeItem) -> Bool {
+        return s1.name < s2.name
+    }
 }
 
 var todoModel = TodoModel()
