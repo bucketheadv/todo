@@ -36,6 +36,7 @@ class TodoDetailController: UITableViewController {
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func cancel(sender: AnyObject) {
+        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
