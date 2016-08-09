@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TodoListController: UITableViewController {
+class TodoListController: UITableViewController, ProtocolTodoDetail {
     var todoList:TypeItem?
 
     override func viewDidLoad() {
@@ -20,6 +20,15 @@ class TodoListController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    func addItem(item: TodoItem) {
+        todoList?.items.append(item)
+        self.tableView.reloadData()
+    }
+    
+    func editItem() {
+        self.tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -76,6 +85,21 @@ class TodoListController: UITableViewController {
     
     override func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
         return "删除"
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let navigationController = segue.destinationViewController as! UINavigationController
+        let controller = navigationController.topViewController as! TodoDetailController
+        controller.delegate = self
+        let segueStr = segue.identifier
+        if segueStr == "AddItem" {
+            controller.isAdd = true
+        } else if segueStr == "EditItem" {
+            let indexPath = self.tableView.indexPathForCell(sender! as! UITableViewCell)
+            controller.todoItem = todoList!.items[indexPath!.row]
+            print(todoList!.items[indexPath!.row])
+            controller.isAdd = false
+        }
     }
 
     /*
